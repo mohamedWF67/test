@@ -12,10 +12,7 @@ import javax.swing.*;
  */
 public class JF extends javax.swing.JFrame {
 
-    public String s ="";
-    public String s2 = "";
-    public String hash = "";
-    
+    String hash = "";
     /**
      * Creates new form JF
      */
@@ -133,34 +130,32 @@ public class JF extends javax.swing.JFrame {
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
-        s = jTextField1.getText();
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        String text = jTextField1.getText();
         try {
-            hash = Encryption.Encrypt(s);
+            hash = Encryption.Encrypt(text);
+            jTextArea1.setText(hash);
         }catch(Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
-        jTextArea1.setText(hash);
-        System.out.println(hash);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
-        s2 = jTextField2.getText();
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)  {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        String text = jTextField2.getText();
         try {
-            jLabel2.setText(Encryption.CheckCorrectness(jTextField2.getText(),hash).toString());
-            System.out.println(Encryption.CheckCorrectness(jTextField2.getText(),hash).toString());
+            Boolean iscorrect = Encryption.CheckCorrectness(text,hash);
+            jLabel2.setText(iscorrect ? "Correct" : "Incorrect");
         }catch(Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
-
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

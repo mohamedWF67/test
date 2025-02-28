@@ -14,7 +14,11 @@ public class Test {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
-        JF jf = new JF();
-        jf.setVisible(true);
+        Creds creds = new Creds();
+        Creds.addUser(new User("Waleed", "123456",1));
+        Creds.addUser(new User("mohamed", "06072005",2));
+        Creds.addUser(new User("mdxx421@gmail.com", "462305",3));
+        Auth auth = new Auth();
+        auth.setVisible(true);
     }
 }
