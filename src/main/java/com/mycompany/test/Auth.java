@@ -223,7 +223,13 @@ public class Auth extends javax.swing.JFrame {
         String hash = Creds.getPassword(usernameTxt);
         System.out.println("hash: " + hash);
         try{
-            statusLabel.setText((Encryption.CheckCorrectness(passwordTxt,type,Creds.getPassword(usernameTxt))?"correct":"incorrect"));
+            Boolean Status = Encryption.CheckCorrectness(passwordTxt,type,Creds.getPassword(usernameTxt));
+            statusLabel.setText(Status?"correct":"incorrect");
+            if (Status){
+                MainApp mainApp = new MainApp();
+                mainApp.setVisible(true);
+                this.dispose();
+            }
         }catch(Exception e) {
             statusLabel.setText("Invalid error");
         }
