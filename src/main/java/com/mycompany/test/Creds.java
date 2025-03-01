@@ -12,12 +12,20 @@ import java.util.ArrayList;
  */
 public class Creds {
     private static ArrayList<User> users;
+    private static ArrayList<Teacher> teachers;
     public Creds() {
         users = new ArrayList<>();
+        teachers = new ArrayList<>();
     }
     public static String addUser(User user){
         users.add(user);
         return "User added";
+    }
+
+    public static String addUser(Teacher teacher){
+        users.add(teacher);
+        teachers.add(teacher);
+        return "Teacher added";
     }
     public static String removeUser(User user){
         users.remove(user);
@@ -44,5 +52,11 @@ public class Creds {
         for(User user : users){
             System.out.println(user.toString());
         }
+    }
+    public static ArrayList<User> getUsers(){
+        return users;
+    }
+    public static ArrayList<Teacher> getTeachers(){
+        return teachers;
     }
 }
