@@ -46,6 +46,7 @@ public class Auth extends javax.swing.JFrame {
         statusLabelRegister = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Auth");
 
         loginBtn.setText("Login");
         loginBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -248,15 +249,18 @@ public class Auth extends javax.swing.JFrame {
         String usernameTxt = usernameInput1.getText();
         String passwordTxt = passwordInput1.getText();
         int type = jComboBox2.getSelectedIndex() + 1;
-        System.out.println("type: " + type);
-        if (Creds.getUser(usernameTxt)==null && passwordTxt != null) {
+        if (Creds.getUser(usernameTxt)==null && !passwordTxt.equals("") && !usernameTxt.equals("")) {
             try {
                 System.out.println(Creds.addUser(new User(usernameTxt, passwordTxt, type)));
             } catch (Exception e) {
                 System.out.println(e);
             }
             statusLabelRegister.setText("Account created");
-        }else {
+        } else if (usernameTxt.equals("")) {
+            statusLabelRegister.setText("Username is empty");
+        }else if (passwordTxt.equals("")) {
+            statusLabelRegister.setText("Password is empty");
+        } else {
             statusLabelRegister.setText("Account with the same Email already exists");
         }
     }//GEN-LAST:event_registerBtnActionPerformed

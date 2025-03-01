@@ -4,6 +4,12 @@
  */
 package com.mycompany.test;
 
+import com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatOneDarkIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialDarkerIJTheme;
+
+import java.awt.*;
+
 /**
  *
  * @author mohamed waleed
@@ -26,7 +32,6 @@ public class MainApp extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        appName = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -53,8 +58,7 @@ public class MainApp extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        appName.setText("My School.app");
+        setTitle("My School.app");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -85,7 +89,19 @@ public class MainApp extends javax.swing.JFrame {
 
         jLabel5.setText("Salary");
 
+        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField5KeyTyped(evt);
+            }
+        });
+
         jLabel6.setText("Mobile Number");
+
+        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField6KeyTyped(evt);
+            }
+        });
 
         jLabel7.setText("Address");
 
@@ -199,7 +215,7 @@ public class MainApp extends javax.swing.JFrame {
                             .addComponent(jButton2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton3)
                             .addComponent(jButton4)))
@@ -217,7 +233,7 @@ public class MainApp extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 531, Short.MAX_VALUE)
+            .addGap(0, 553, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("tab2", jPanel2);
@@ -228,19 +244,13 @@ public class MainApp extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(appName)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jTabbedPane1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(appName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1)
                 .addContainerGap())
         );
@@ -251,14 +261,44 @@ public class MainApp extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String name = jTextField1.getText();
+        if (name.equals("")) {
+            System.out.println("Name is empty");
+            return;
+        }
         String Email = jTextField2.getText();
+        if (Email.equals("")) {
+            System.out.println("Email is empty");
+            return;
+        }
         String password = jTextField3.getText();
+        if (password.equals("")) {
+            System.out.println("password is empty");
+            return;
+        }
         String qualification = jTextField4.getText();
-        int salary = Integer.parseInt(jTextField5.getText());
-        int mobileNo = Integer.parseInt(jTextField6.getText());
+        if (qualification.equals("")) {
+            System.out.println("qualification is empty");
+            return;
+        }
+
+        String salary = jTextField5.getText();
+        if (salary.equals("")) {
+            System.out.println("salary is empty");
+            return;
+        }
+        String mobileNo = jTextField6.getText();
+        if (mobileNo.equals("")) {
+            System.out.println("mobileNo is empty");
+            return;
+        }
         String address = jTextField7.getText();
+        if (address.equals("")) {
+            System.out.println("address is empty");
+            return;
+        }
+
         if (Creds.getUser(Email)==null) {
-            Creds.addUser(new Teacher(Email,password, name, qualification, salary, mobileNo, address));
+            Creds.addUser(new Teacher(Email,password, name, qualification, Integer.parseInt(salary), Integer.parseInt(mobileNo), address));
             System.out.println("added user");
         }else{
             System.out.println("user already exists");
@@ -285,6 +325,22 @@ public class MainApp extends javax.swing.JFrame {
         // TODO add your handling code here:
         Creds.printUsers();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jTextField5KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField5KeyTyped
+
+    private void jTextField6KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField6KeyTyped
 
     /**
      * @param args the command line arguments
@@ -322,7 +378,6 @@ public class MainApp extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel appName;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

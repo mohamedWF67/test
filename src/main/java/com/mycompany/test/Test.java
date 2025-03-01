@@ -4,6 +4,9 @@
 
 package com.mycompany.test;
 
+import com.formdev.flatlaf.intellijthemes.FlatOneDarkIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialDarkerIJTheme;
+
 import javax.swing.*;
 
 /**
@@ -11,8 +14,8 @@ import javax.swing.*;
  * @author mohamed waleed
  */
 public class Test {
-
     public static void main(String[] args) {
+        FlatOneDarkIJTheme.setup();
         System.out.println("Hello World!");
         Creds creds = new Creds();
         Creds.addUser(new User("Waleed", "123456",1));
