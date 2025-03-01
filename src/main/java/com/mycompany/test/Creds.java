@@ -13,10 +13,30 @@ import java.util.ArrayList;
 public class Creds {
     private static ArrayList<User> users;
     private static ArrayList<Teacher> teachers;
+    private static int currentID;
+
     public Creds() {
         users = new ArrayList<>();
         teachers = new ArrayList<>();
     }
+
+    public static int getCurrentID() {
+        return currentID;
+    }
+
+    public static void setCurrentID(int currentID) {
+        Creds.currentID = currentID;
+    }
+
+    public static User getCurrentTeacher() {
+        for (Teacher teacher : teachers) {
+            if (teacher.getID() == currentID) {
+                return teacher;
+            }
+        }
+        return null;
+    }
+
     public static String addUser(User user){
         users.add(user);
         return "User added";
@@ -51,6 +71,22 @@ public class Creds {
     public static void printUsers(){
         for(User user : users){
             System.out.println(user.toString());
+        }
+    }
+    public static void modifyTeacher(int id,String name, String username, String password,String qualification, String salary, String mobileNo, String address){
+        for(Teacher teacher : teachers){
+            if(teacher.getID() == id){
+                teacher.setTeacherName(name);
+                teacher.setUsername(username);
+                teacher.setPassword(password);
+                teacher.setQualification(qualification);
+                teacher.setSalary(Integer.parseInt(salary));
+                teacher.setMobileNo(Integer.parseInt(mobileNo));
+                teacher.setAddress(address);
+                System.out.println("Modified teacher");
+            }else{
+                System.out.println("teacher not found");
+            }
         }
     }
     public static ArrayList<User> getUsers(){

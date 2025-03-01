@@ -9,14 +9,18 @@ package com.mycompany.test;
  * @author mohamed waleed
  */
 public class User {
+    private static int count = 0;
+    private int ID;
     private String username;
     private String password;
 
     public User() {
+        ID = ++count;
         username = "";
         password = "";
     }
     public User(String username, String password) {
+        ID = ++count;
         this.username = username;
         try {
             this.password = Encryption.Encrypt(password);
@@ -26,6 +30,7 @@ public class User {
     }
 
     public User(String username, String password,int type) {
+        ID = ++count;
         this.username = username;
         try {
             this.password = Encryption.Encrypt(password,type);
@@ -50,7 +55,15 @@ public class User {
         setPassword(password,1);
     }
 
-    public void setPassword(String password,int type) {
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public void setPassword(String password, int type) {
         try {
             this.password = Encryption.Encrypt(password,type);
         }catch(Exception e) {
@@ -61,7 +74,8 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "id='" + ID + '\''+
+                ",username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

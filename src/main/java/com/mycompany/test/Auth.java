@@ -226,12 +226,13 @@ public class Auth extends javax.swing.JFrame {
         try{
             Boolean Status = Encryption.CheckCorrectness(passwordTxt,type,Creds.getPassword(usernameTxt));
             statusLabel.setText(Status?"correct":"incorrect");
+            System.out.println("Status: " + Status);
             if (Status){
-                MainApp mainApp = new MainApp();
-                mainApp.setVisible(true);
+                new MainApp().setVisible(true);
                 this.dispose();
             }
         }catch(Exception e) {
+            System.err.println(e);
             statusLabel.setText("Invalid error");
         }
     }//GEN-LAST:event_loginBtnActionPerformed

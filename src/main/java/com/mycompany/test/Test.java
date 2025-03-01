@@ -5,7 +5,6 @@
 package com.mycompany.test;
 
 import com.formdev.flatlaf.intellijthemes.FlatOneDarkIJTheme;
-import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialDarkerIJTheme;
 
 import javax.swing.*;
 
@@ -21,6 +20,7 @@ public class Test {
         Creds.addUser(new User("Waleed", "123456",1));
         Creds.addUser(new User("mohamed", "06072005",2));
         Creds.addUser(new User("mdxx421@gmail.com", "462305",3));
+        Creds.addUser(new Teacher("mdxx","123456","walaa","PHD",5600,010,"15 wall street"));
         Auth auth = new Auth();
         auth.setVisible(true);
     }
