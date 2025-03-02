@@ -4,6 +4,7 @@
  */
 package com.mycompany.test;
 
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -38,17 +39,26 @@ public class Creds {
     }
 
     public static String addUser(User user){
-        users.add(user);
-        return "User added";
+        if (!users.contains(user)) {
+            users.add(user);
+            return "User added";
+        }
+        return "User already exists";
     }
 
     public static String addUser(Teacher teacher){
-        users.add(teacher);
-        teachers.add(teacher);
-        return "Teacher added";
+        if (!users.contains(teacher)||teachers.contains(teacher)) {
+            users.add(teacher);
+            teachers.add(teacher);
+            return "Teacher added";
+        }
+        return "Teacher already exists";
     }
     public static String removeUser(User user){
         users.remove(user);
+        if (user instanceof Teacher){
+            teachers.remove((Teacher)user);
+        }
         return "User deleted";
     }
     public static String getPassword(String username){
@@ -78,7 +88,9 @@ public class Creds {
             if(teacher.getID() == id){
                 teacher.setTeacherName(name);
                 teacher.setUsername(username);
-                teacher.setPassword(password);
+                if (!password.equals("")) {
+                    teacher.setPassword(password);
+                }
                 teacher.setQualification(qualification);
                 teacher.setSalary(Integer.parseInt(salary));
                 teacher.setMobileNo(Integer.parseInt(mobileNo));
@@ -94,5 +106,48 @@ public class Creds {
     }
     public static ArrayList<Teacher> getTeachers(){
         return teachers;
+    }
+    public static void saveTofile(){
+        try {
+            FileWriter fw = new FileWriter("UsersDB.txt");
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (User user : users) {
+                bw.write(user.toFormattedString());
+                bw.newLine();
+            }
+            bw.close();
+            fw.close();
+            System.out.println("File Written Successfully");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void readFromfile(){
+        try {
+            FileReader fr = new FileReader("UsersDB.txt");
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            int i = 0;
+            while((line = br.readLine()) != null) {
+                if (line.indexOf("User{@ID=") != -1) {
+                    int idstart = line.indexOf("@Id=") + 4;
+                    int idend = line.indexOf(", @Email=");
+                    String id = line.substring(idstart, idend);
+                    int emailStart = idend + 9;
+                    int emailEnd = line.indexOf(", @Password=");
+                    String email = line.substring(emailStart, emailEnd);
+                    int passwordStart = emailEnd + 12;
+                    int passwrodEnd = line.indexOf("}");
+                    String password = line.substring(passwordStart, passwrodEnd);
+                    addUser(new User(email, password,true));
+                    System.out.println("Read from DB" + (i+1));
+                }
+                i++;
+            }
+            br.close();
+            fr.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

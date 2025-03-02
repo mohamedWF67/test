@@ -68,14 +68,18 @@ public class Teacher extends User{
 
     @Override
     public String toString() {
-        return "Teacher{" + "\n" +
-                "username = " + getUsername() + '\n' +
-                "password = " + getPassword() + '\n' +
-                "teacherName = " + teacherName + '\n' +
-                "qualification = " + qualification + '\n' +
-                "salary = " + salary + "\n"+
-                "mobileNo = " + mobileNo + "\n"+
-                "Address = " + Address + '\n' +
+        return "Teacher{" +
+                "teacherName='" + teacherName + '\'' +
+                ",Email='" + super.getUsername() + '\'' +
+                ",Password='" + super.getPassword() + '\'' +
+                ", qualification='" + qualification + '\'' +
+                ", salary=" + salary +
+                ", mobileNo=" + mobileNo +
+                ", Address='" + Address + '\'' +
                 '}';
+    }
+    @Override
+    public String toFormattedString() {
+        return "Teacher{" + "@TeacherName=" + teacherName + ", @Email=" + super.getUsername() + ", @Password=" + super.getPassword() + ", @Qualification=" + qualification + ", @Salary=" + salary + ", @MobileNo=" + mobileNo + ", @Address=" + Address + '}';
     }
 }

@@ -28,7 +28,11 @@ public class User {
             System.out.println(e);
         }
     }
-
+    public User(String username, String password, Boolean priv) {
+        ID = ++count;
+        this.username = username;
+        this.password = password;
+    }
     public User(String username, String password,int type) {
         ID = ++count;
         this.username = username;
@@ -78,5 +82,9 @@ public class User {
                 ",username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public String toFormattedString() {
+        return "User{" + "@ID=" + ID + ", @Email=" + username + ", @Password=" + password + '}';
     }
 }
