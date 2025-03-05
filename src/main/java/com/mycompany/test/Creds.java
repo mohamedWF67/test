@@ -115,6 +115,8 @@ public class Creds {
                 bw.write(user.toFormattedString());
                 bw.newLine();
             }
+            bw.write("@#Max_id="+User.getCount()+"}@end");
+            bw.newLine();
             bw.close();
             fw.close();
             System.out.println("File Written Successfully");
@@ -130,17 +132,51 @@ public class Creds {
             int i = 0;
             while((line = br.readLine()) != null) {
                 if (line.indexOf("User{@ID=") != -1) {
-                    int idstart = line.indexOf("@Id=") + 4;
+                    int idstart = line.indexOf("User{@ID=") + 9;
                     int idend = line.indexOf(", @Email=");
-                    String id = line.substring(idstart, idend);
+                    String test = line.substring(idstart, idend);
+                    System.out.println(test);
+                    int id = Integer.parseInt(line.substring(idstart, idend));
                     int emailStart = idend + 9;
                     int emailEnd = line.indexOf(", @Password=");
                     String email = line.substring(emailStart, emailEnd);
                     int passwordStart = emailEnd + 12;
-                    int passwrodEnd = line.indexOf("}");
+                    int passwrodEnd = line.indexOf("}@end");
                     String password = line.substring(passwordStart, passwrodEnd);
-                    addUser(new User(email, password,true));
+                    addUser(new User(id,email, password));
                     System.out.println("Read from DB" + (i+1));
+                } else if (line.indexOf("Teacher{@Teacher_ID=") != -1) {
+                    int idstart = line.indexOf("@Teacher_ID=") + 12;
+                    int idend = line.indexOf(", @TeacherName=");
+                    String id = line.substring(idstart, idend);
+                    int nameStart = idend + 15;
+                    int nameEnd = line.indexOf(", @Email=");
+                    String name = line.substring(nameStart, nameEnd);
+                    int emailStart = nameEnd + 9;
+                    int emailEnd = line.indexOf(", @Password=");
+                    String email = line.substring(emailStart, emailEnd);
+                    int passwordStart = emailEnd + 12;
+                    int passwrodEnd = line.indexOf(", @Qualification=");
+                    String password = line.substring(passwordStart, passwrodEnd);
+                    int qualificationStart = passwrodEnd + 17;
+                    int qualificationEnd = line.indexOf(", @Salary=");
+                    String qualification = line.substring(qualificationStart, qualificationEnd);
+                    int salaryStart = qualificationEnd + 10;
+                    int salaryEnd = line.indexOf(", @MobileNo=");
+                    String salary = line.substring(salaryStart, salaryEnd);
+                    int mobileNoStart = salaryEnd + 12;
+                    int mobileNoEnd = line.indexOf(", @Address=");
+                    String mobileNo = line.substring(mobileNoStart, mobileNoEnd);
+                    int addressStart = mobileNoEnd + 11;
+                    int addressEnd = line.indexOf("}@end");
+                    String address = line.substring(addressStart, addressEnd);
+                    addUser(new Teacher(Integer.parseInt(id),email,password,name,qualification,Integer.parseInt(salary),Integer.parseInt(mobileNo),address));
+                    System.out.println("Read from DB" + (i+1) + " a Teacher");
+                } else if (line.indexOf("@{#Max_id=") != -1) {
+                    int idstart = line.indexOf("@{#Max_id=") + 10;
+                    int idend = line.indexOf("}@end");
+                    int count = Integer.parseInt(line.substring(idstart, idend));
+                    User.setCount(count);
                 }
                 i++;
             }

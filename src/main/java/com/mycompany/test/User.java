@@ -28,8 +28,8 @@ public class User {
             System.out.println(e);
         }
     }
-    public User(String username, String password, Boolean priv) {
-        ID = ++count;
+    public User(int id,String username, String password) {
+        ID = id;
         this.username = username;
         this.password = password;
     }
@@ -67,6 +67,14 @@ public class User {
         this.ID = ID;
     }
 
+    public static void  setCount(int count) {
+        User.count = count;
+    }
+
+    public static int getCount() {
+        return count;
+    }
+
     public void setPassword(String password, int type) {
         try {
             this.password = Encryption.Encrypt(password,type);
@@ -85,6 +93,6 @@ public class User {
     }
 
     public String toFormattedString() {
-        return "User{" + "@ID=" + ID + ", @Email=" + username + ", @Password=" + password + '}';
+        return "User{" + "@ID=" + ID + ", @Email=" + username + ", @Password=" + password + "}@end";
     }
 }

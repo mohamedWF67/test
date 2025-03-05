@@ -8,8 +8,8 @@ public class Teacher extends User{
     int mobileNo;
     String Address;
 
-    public Teacher(String username, String password, String teacherName, String qualification, int salary, int mobileNo, String address) {
-        super(username, password);
+    public Teacher(String Email, String password, String teacherName, String qualification, int salary, int mobileNo, String address) {
+        super(Email, password);
         this.teacherName = teacherName;
         this.qualification = qualification;
         this.salary = salary;
@@ -17,8 +17,17 @@ public class Teacher extends User{
         Address = address;
     }
 
-    public Teacher(String username, String password, int type, String teacherName, String qualification, int salary, int mobileNo, String address) {
-        super(username, password, type);
+    public Teacher(int ID,String Email, String password, String teacherName, String qualification, int salary, int mobileNo, String address) {
+        super(ID,Email, password);
+        this.teacherName = teacherName;
+        this.qualification = qualification;
+        this.salary = salary;
+        this.mobileNo = mobileNo;
+        Address = address;
+    }
+
+    public Teacher(String Email, String password, int type, String teacherName, String qualification, int salary, int mobileNo, String address) {
+        super(Email, password, type);
         this.teacherName = teacherName;
         this.qualification = qualification;
         this.salary = salary;
@@ -69,7 +78,8 @@ public class Teacher extends User{
     @Override
     public String toString() {
         return "Teacher{" +
-                "teacherName='" + teacherName + '\'' +
+                "teacher_ID'" + super.getID() + "\'" +
+                ",teacherName='" + teacherName + '\'' +
                 ",Email='" + super.getUsername() + '\'' +
                 ",Password='" + super.getPassword() + '\'' +
                 ", qualification='" + qualification + '\'' +
@@ -80,6 +90,6 @@ public class Teacher extends User{
     }
     @Override
     public String toFormattedString() {
-        return "Teacher{" + "@TeacherName=" + teacherName + ", @Email=" + super.getUsername() + ", @Password=" + super.getPassword() + ", @Qualification=" + qualification + ", @Salary=" + salary + ", @MobileNo=" + mobileNo + ", @Address=" + Address + '}';
+        return "Teacher{" + "@Teacher_ID="+ super.getID() + ", @TeacherName=" + teacherName + ", @Email=" + super.getUsername() + ", @Password=" + super.getPassword() + ", @Qualification=" + qualification + ", @Salary=" + salary + ", @MobileNo=" + mobileNo + ", @Address=" + Address + "}@end";
     }
 }

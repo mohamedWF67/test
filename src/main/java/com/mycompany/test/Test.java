@@ -18,7 +18,6 @@ public class Test {
         System.out.println("Hello World!");
         Creds creds = new Creds();
         Creds.readFromfile();
-        Creds.addUser(new Teacher("mdxx","123456","walaa","PHD",5600,010,"15 wall street"));
         Auth auth = new Auth();
         auth.setVisible(true);
     }
