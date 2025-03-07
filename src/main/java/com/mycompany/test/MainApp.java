@@ -11,6 +11,7 @@ import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialDarker
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +19,6 @@ import java.util.ArrayList;
  * @author mohamed waleed
  */
 public class MainApp extends javax.swing.JFrame {
-
     /**
      * Creates new form MainApp
      */
@@ -617,7 +617,9 @@ public class MainApp extends javax.swing.JFrame {
         // TODO add your handling code here:
         String name = Creds.getCurrentTeacher().getUsername();
         Creds.removeUser(Creds.getCurrentTeacher());
-        System.out.println("removed user: " + name);
+        if (Test.isDebug()){
+            System.out.println("removed user: " + name);
+        }
         refreshTeacherTable();
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -723,7 +725,6 @@ public class MainApp extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        Creds.saveTofile();
     }//GEN-LAST:event_formWindowClosing
 
     /**

@@ -71,7 +71,8 @@ public class Auth extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Quick Login");
+        jButton1.setEnabled(Test.isDebug());
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -88,7 +89,7 @@ public class Auth extends javax.swing.JFrame {
                     .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                        .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -232,13 +233,13 @@ public class Auth extends javax.swing.JFrame {
         String usernameTxt = usernameInput.getText();
         String passwordTxt = passwordInput.getText();
         int type = jComboBox1.getSelectedIndex() + 1;
-        System.out.println("type: " + type);
         String hash = Creds.getPassword(usernameTxt);
-        System.out.println("hash: " + hash);
         try{
             Boolean Status = Encryption.CheckCorrectness(passwordTxt,type,Creds.getPassword(usernameTxt));
             statusLabel.setText(Status?"correct":"incorrect");
-            System.out.println("Status: " + Status);
+            if (Test.isDebug()){
+                System.out.println("Status: " + Status);
+            }
             if (Status){
                 new MainApp().setVisible(true);
                 this.dispose();

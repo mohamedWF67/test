@@ -72,7 +72,9 @@ public class Creds {
     public static User getUser(String username){
         for(User user : users){
             if(user.getUsername().equals(username)){
-                System.out.println("found user = " + user.getUsername());
+                if (Test.isDebug()){
+                    System.out.println("found user = " + user.getUsername());
+                }
                 return user;
             }
         }
@@ -115,11 +117,13 @@ public class Creds {
                 bw.write(user.toFormattedString());
                 bw.newLine();
             }
-            bw.write("@#Max_id="+User.getCount()+"}@end");
+            bw.write("@{#Max_id="+User.getCount()+"}@end");
             bw.newLine();
             bw.close();
             fw.close();
-            System.out.println("File Written Successfully");
+            if (Test.isDebug()){
+                System.out.println("File Written Successfully");
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -135,7 +139,6 @@ public class Creds {
                     int idstart = line.indexOf("User{@ID=") + 9;
                     int idend = line.indexOf(", @Email=");
                     String test = line.substring(idstart, idend);
-                    System.out.println(test);
                     int id = Integer.parseInt(line.substring(idstart, idend));
                     int emailStart = idend + 9;
                     int emailEnd = line.indexOf(", @Password=");
@@ -144,7 +147,9 @@ public class Creds {
                     int passwrodEnd = line.indexOf("}@end");
                     String password = line.substring(passwordStart, passwrodEnd);
                     addUser(new User(id,email, password));
-                    System.out.println("Read from DB" + (i+1));
+                    if (Test.isDebug()){
+                        System.out.println("Read from DB" + (i+1));
+                    }
                 } else if (line.indexOf("Teacher{@Teacher_ID=") != -1) {
                     int idstart = line.indexOf("@Teacher_ID=") + 12;
                     int idend = line.indexOf(", @TeacherName=");
@@ -171,7 +176,9 @@ public class Creds {
                     int addressEnd = line.indexOf("}@end");
                     String address = line.substring(addressStart, addressEnd);
                     addUser(new Teacher(Integer.parseInt(id),email,password,name,qualification,Integer.parseInt(salary),Integer.parseInt(mobileNo),address));
-                    System.out.println("Read from DB" + (i+1) + " a Teacher");
+                    if (Test.isDebug()){
+                        System.out.println("Read from DB" + (i+1) + " a Teacher");
+                    }
                 } else if (line.indexOf("@{#Max_id=") != -1) {
                     int idstart = line.indexOf("@{#Max_id=") + 10;
                     int idend = line.indexOf("}@end");
