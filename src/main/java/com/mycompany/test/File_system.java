@@ -4,41 +4,44 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class File_system {
+
+    //Write and ArrayList to a File Using its pathname
     public static void writeAllToFile(String filename, ArrayList<Object> objects) throws IOException {
-        File file = new File(filename);
-        FileWriter fw = new FileWriter(file);
-        BufferedWriter bw = new BufferedWriter(fw);
+
+        File file = new File(filename);//Creates a File From the File path
+        FileWriter fw = new FileWriter(file);//Creates a FileWriter using the File
+        BufferedWriter bw = new BufferedWriter(fw);//Creates a BufferedWriter using the FileWriter
+
+        //iterate through all of the Objects of the ArrayList using a Range-Based For-Loop
         for (Object obj : objects) {
-            ArrayList<Field> fields = new ArrayList<>(Arrays.asList(obj.getClass().getSuperclass().getDeclaredFields()));
-            fields.addAll(Arrays.asList(obj.getClass().getDeclaredFields()));
-            try {
-                bw.write(obj.getClass().getName() + "{");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            if (fields.size() > 0) {
+
+            Class clazz = obj.getClass();//Creates a reference to the Class of the object
+            ArrayList<Field> fields = fillFields(clazz);//creates an Arraylist for the class's Fields using the fillFields function
+
+            bw.write(clazz.getName() + "{");//Writes the Class Name to the File
+            if (!fields.isEmpty()) {//Check's if the fields is not empty
+                //iterate through the fields using a Range-Based For-Loop
                 for (Field field : fields) {
                     try {
-                        if (Modifier.isStatic(field.getModifiers())) {continue;}
-                        field.setAccessible(true);
-                        bw.write("@#" + field.getName().toUpperCase() + "=" + field.get(obj) + ",");
-                    } catch (IOException | IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
+                        if (Modifier.isStatic(field.getModifiers())) continue;//Skips if the Field is Static
+                        field.setAccessible(true);// Allow access to private fields
+                        bw.write("@#" + field.getName().toUpperCase() + "=" + field.get(obj) + ",");//Writes the Field to the File in a Special format
+                    } catch (IOException | IllegalAccessException e) {throw new RuntimeException(e);}
                 }
-                System.out.println("Printing " + obj.getClass().getName());
-            } else {
-                System.out.println("Failed to print " + obj.getClass().getName());
-            }
-            bw.write("}@#END");
-            bw.newLine();
+                System.out.println("Printing " + clazz.getName());//Console confirmation
+            } else System.err.println("Failed to print " + clazz.getName());//Console Error message
+            bw.write("}@#END");//Writes the End of the Class to the File
+            bw.newLine();//Writes a new line to the File
         }
-        bw.close();
-        fw.close();
+        bw.close();//Closes the BufferedWriter
+        fw.close();//Closes the FileWriter
+        System.out.println(filename + " written to " + file.getAbsolutePath());
     }
     public static void writeToFile(String filename, Object obj) throws IOException {
         File file = new File(filename);
@@ -68,12 +71,10 @@ public class File_system {
         }
         for (Field field : obj.getClass().getDeclaredFields()) {
             try {
-                if (Modifier.isStatic(field.getModifiers())) {
-                    continue;
-                }
+                if (Modifier.isStatic(field.getModifiers())) continue;
                 field.setAccessible(true);
                 bw.write("@#"+field.getName().toUpperCase()+"=" + field.get(obj)+",");
-            } catch (IOException | IllegalAccessException  e) {
+            } catch (IllegalAccessException  e) {
                 throw new RuntimeException(e);
             }
         }
@@ -92,8 +93,7 @@ public class File_system {
         while ((line = br.readLine()) != null) {
             String className = line.substring(0, line.indexOf("{"));
             Class<?> c = Class.forName(className);
-            ArrayList<Field> fields = new ArrayList<>(Arrays.asList(c.getSuperclass().getDeclaredFields()));
-            fields.addAll(Arrays.asList(c.getDeclaredFields()));
+            ArrayList<Field> fields = fillFields(c);
             System.out.println("Class Name is " + c.getName());
             ArrayList<Object> values = new ArrayList<>();
             int i = 0;
@@ -115,14 +115,13 @@ public class File_system {
                 System.out.println(fieldValue);
                 i++;
             }
-            /*var constructor = c.getClass().getConstructor();
-            constructor.setAccessible(true); // Bypass private constructor*/
             Object obj = c.newInstance();
             assignValues(obj, values);
             System.out.println(obj.getClass().getSuperclass().getName()+": ");
             System.out.println(obj.toString());
             arrayofobjects.add(obj);
         }
+
         return arrayofobjects;
     }
 
@@ -134,8 +133,7 @@ public class File_system {
         line = br.readLine();
         String className = line.substring(0, line.indexOf("{"));
         Class<?> c = Class.forName(className);
-        ArrayList<Field> fields = new ArrayList<>(Arrays.asList(c.getSuperclass().getDeclaredFields()));
-        fields.addAll(Arrays.asList(c.getDeclaredFields()));
+        ArrayList<Field> fields = fillFields(c);
         System.out.println("Class Name is " + c.getName());
         ArrayList<Object> values = new ArrayList<>();
         int i = 0;
@@ -163,6 +161,7 @@ public class File_system {
         System.out.println(teacher);
     }
 
+    //Function for Coverting from string to the FieldType.
     private static Object convertToFieldType(Class<?> fieldType, String value) {
         if (fieldType == int.class || fieldType == Integer.class) {
             return Integer.parseInt(value);
@@ -173,20 +172,23 @@ public class File_system {
         } else if (fieldType == String.class) {
             return value;
         }
+        //if the type wasn't found it throws an error
         throw new IllegalArgumentException("Unsupported field type: " + fieldType);
     }
 
+    //function to assign Values From an ArrayList to the desired Object.
     public static void assignValues(Object obj, ArrayList<Object> values) {
-        Class<?> clazz = obj.getClass();
-        ArrayList<Field> fields = new ArrayList<>(Arrays.asList(clazz.getSuperclass().getDeclaredFields()));
-        fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
-        int j = 0;
+        Class<?> clazz = obj.getClass();//Identify the Class
+
+        ArrayList<Field> fields = fillFields(clazz);//creates an Arraylist for the class's Fields using the fillFields function
+
+        int j = 0;//Used to iterate through the Values ArrayList
         for (int i = 0; i < fields.size() && j < values.size(); i++) {
             fields.get(i).setAccessible(true);// Allow access to private fields
             System.out.println(fields.get(i).getName());
             try {
-                boolean isStatic = Modifier.isStatic(fields.get(i).getModifiers());
-                if(!isStatic){
+                boolean isStatic = Modifier.isStatic(fields.get(i).getModifiers());//Checks if the Field is Static
+                if(!isStatic){//IF the Field isn't static it Assigns it's value if not it skips it
                     fields.get(i).set(obj, values.get(j));// Assign value to the field
                     System.out.println("value of "+fields.get(i).getName()+" is "+fields.get(i).get(obj).toString());
                     j++;
@@ -195,5 +197,27 @@ public class File_system {
                 System.out.println("Error assigning value to " + fields.get(i).getName());
             }
         }
+    }
+
+    private static ArrayList<Field> fillFields(Class c) {
+        ArrayList<Field> fields = new ArrayList<>(Arrays.asList(c.getSuperclass().getDeclaredFields()));//Add the Class's parent Fields to an ArrayList if available
+        fields.addAll(Arrays.asList(c.getDeclaredFields()));//Add the Class's Fields to the Fields ArrayList
+        return fields;
+    }
+
+    public static File getFileFromResources(String fileName) throws IOException {
+        ClassLoader classLoader = Test.class.getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(fileName);
+
+        if (inputStream == null) {
+            throw new FileNotFoundException("File not found in resources: " + fileName);
+        }
+
+        // Create a temporary file and copy the content
+        File tempFile = File.createTempFile("resource_", "_" + fileName);
+        tempFile.deleteOnExit();
+        Files.copy(inputStream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        return tempFile;
     }
 }

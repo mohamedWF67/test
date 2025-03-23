@@ -6,14 +6,10 @@ package com.mycompany.test;
 
 import com.formdev.flatlaf.intellijthemes.FlatOneDarkIJTheme;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  *
@@ -39,22 +35,6 @@ public class Test {
         Test.fileSystemDebug = fileSystemDebug;
     }
 
-    public static File getFileFromResources(String fileName) throws IOException {
-        ClassLoader classLoader = Test.class.getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(fileName);
-
-        if (inputStream == null) {
-            throw new FileNotFoundException("File not found in resources: " + fileName);
-        }
-
-        // Create a temporary file and copy the content
-        File tempFile = File.createTempFile("resource_", "_" + fileName);
-        tempFile.deleteOnExit();
-        Files.copy(inputStream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-        return tempFile;
-    }
-
     public static void main(String[] args) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
@@ -64,7 +44,7 @@ public class Test {
             }
         }));
         FlatOneDarkIJTheme.setup();
-        Creds creds = new Creds();
+        new Creds();
         ArrayList<Object> values = new ArrayList<>();
         values.add(247019);
         values.add("Alice");
@@ -72,9 +52,6 @@ public class Test {
         Teacher teacher = new Teacher();
         File_system.assignValues(teacher,values);
         Desktop.getDesktop().open(new File("test.txt"));
-        //Creds.readFromfile();
-        //File_system.writeToFile("test.txt", Creds.getTeachers().get(0));
-        //File_system.readFromFile("test.txt");
         Creds.setUsers(File_system.readAllFromFile("test.txt"));
         System.out.println(teacher.toString());
         Auth auth = new Auth();
@@ -83,9 +60,10 @@ public class Test {
 
     private static void cleanup() throws IOException {
         //Creds.saveTofile();
-        File_system.writeAllToFile("test.txt", new ArrayList<>(Creds.getUsers()));
+        String filename = "test.txt";
+        File_system.writeAllToFile(filename, new ArrayList<>(Creds.getUsers()));
         if (fileSystemDebug){
-            File file = getFileFromResources("UsersDB.txt");
+            File file = new File(filename);
             if (file.exists()) {
                 System.out.println("file exists");
                 try {

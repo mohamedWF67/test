@@ -8,7 +8,6 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- *
  * @author mohamed waleed
  */
 public class Creds {
@@ -21,6 +20,7 @@ public class Creds {
         teachers = new ArrayList<>();
     }
 
+    //Make-Shift setUser till i find a better way
     public static void setUsers(ArrayList<Object> objects) {
         Creds.users = new ArrayList<>();
         for (Object object : objects) {
@@ -123,7 +123,17 @@ public class Creds {
     public static ArrayList<Teacher> getTeachers(){
         return teachers;
     }
-    public static void saveTofile(){
+
+    public static void Save(){
+        String filename = "test.txt";
+        try {
+            File_system.writeAllToFile(filename,new ArrayList<>(getUsers()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    //*Legacy FileSystem V1.0*//
+    /*public static void saveTofile(){
         try {
             File file = new File("UsersDB.txt");
             FileWriter fw = new FileWriter(file);
@@ -207,6 +217,6 @@ public class Creds {
             fr.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-    }
+        }*/
+
 }
