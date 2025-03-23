@@ -9,9 +9,11 @@ import com.formdev.flatlaf.intellijthemes.FlatOneDarkIJTheme;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -53,7 +55,7 @@ public class Test {
         return tempFile;
     }
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
                 cleanup();
@@ -70,16 +72,18 @@ public class Test {
         Teacher teacher = new Teacher();
         File_system.assignValues(teacher,values);
         Desktop.getDesktop().open(new File("test.txt"));
-        Creds.readFromfile();
-        File_system.writeToFile("test.txt", Creds.getTeachers().get(0));
-        File_system.readFromFile("test.txt");
+        //Creds.readFromfile();
+        //File_system.writeToFile("test.txt", Creds.getTeachers().get(0));
+        //File_system.readFromFile("test.txt");
+        Creds.setUsers(File_system.readAllFromFile("test.txt"));
         System.out.println(teacher.toString());
         Auth auth = new Auth();
         auth.setVisible(true);
     }
 
     private static void cleanup() throws IOException {
-        Creds.saveTofile();
+        //Creds.saveTofile();
+        File_system.writeAllToFile("test.txt", new ArrayList<>(Creds.getUsers()));
         if (fileSystemDebug){
             File file = getFileFromResources("UsersDB.txt");
             if (file.exists()) {

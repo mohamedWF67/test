@@ -21,6 +21,20 @@ public class Creds {
         teachers = new ArrayList<>();
     }
 
+    public static void setUsers(ArrayList<Object> objects) {
+        Creds.users = new ArrayList<>();
+        for (Object object : objects) {
+            if (object instanceof User) {
+                if (object instanceof Teacher) {
+                    addUser((Teacher) object);
+                    System.out.println("Teacher added");
+                }
+                addUser((User)object);
+                System.out.println("added user: " + object);
+            }
+        }
+    }
+
     public static int getCurrentID() {
         return currentID;
     }
