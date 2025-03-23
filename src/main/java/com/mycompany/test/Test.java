@@ -53,7 +53,7 @@ public class Test {
         return tempFile;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
                 cleanup();
@@ -67,12 +67,13 @@ public class Test {
         values.add(247019);
         values.add("Alice");
         values.add("123456");
-        User user = new User();
-        File_system.assignValues(user,values);
+        Teacher teacher = new Teacher();
+        File_system.assignValues(teacher,values);
         Desktop.getDesktop().open(new File("test.txt"));
         Creds.readFromfile();
         File_system.writeToFile("test.txt", Creds.getTeachers().get(0));
-        System.out.println(user.toString());
+        File_system.readFromFile("test.txt");
+        System.out.println(teacher.toString());
         Auth auth = new Auth();
         auth.setVisible(true);
     }

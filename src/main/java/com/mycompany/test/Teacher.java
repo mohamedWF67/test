@@ -8,6 +8,9 @@ public class Teacher extends User{
     int mobileNo;
     String Address;
 
+    public Teacher() {
+    }
+
     public Teacher(String Email, String password, String teacherName, String qualification, int salary, int mobileNo, String address) {
         super(Email, password);
         this.teacherName = teacherName;
