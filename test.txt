@@ -1,0 +1,1 @@
+com.mycompany.test.User{@#COUNT=1,@#ID=247019,@#USERNAME=Alice,@#PASSWORD=123456,}@#END

@@ -111,7 +111,8 @@ public class Creds {
     }
     public static void saveTofile(){
         try {
-            FileWriter fw = new FileWriter("UsersDB.txt");
+            File file = new File("UsersDB.txt");
+            FileWriter fw = new FileWriter(file);
             BufferedWriter bw = new BufferedWriter(fw);
             for (User user : users) {
                 bw.write(user.toFormattedString());
@@ -130,7 +131,8 @@ public class Creds {
     }
     public static void readFromfile(){
         try {
-            FileReader fr = new FileReader("UsersDB.txt");
+            File file = new File("UsersDB.txt");
+            FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
             String line;
             int i = 0;
